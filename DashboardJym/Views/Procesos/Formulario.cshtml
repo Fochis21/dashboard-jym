@@ -1,0 +1,98 @@
+@model DashboardJym.Models.Proceso
+@{
+    bool esNuevo = (bool)(ViewData["EsNuevo"] ?? true);
+    ViewData["Title"] = esNuevo ? "Registrar proceso" : "Editar proceso";
+    var clientes = (List<DashboardJym.Models.Cliente>)ViewBag.Clientes;
+    var tiposProceso = (List<DashboardJym.Models.TipoProceso>)ViewBag.TiposProceso;
+    var usuarios = (List<DashboardJym.Models.Usuario>)ViewBag.Usuarios;
+}
+
+<h1>@(esNuevo ? "Registrar proceso" : "Editar proceso")</h1>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <p class="error">Revisa los campos marcados: hay datos obligatorios o inválidos.</p>
+}
+
+<form method="post"
+      asp-action="@(esNuevo ? "Registrar" : "Actualizar")"
+      asp-route-id="@(esNuevo ? null : Model.Id)">
+    @Html.AntiForgeryToken()
+
+    <div class="grid">
+        <div class="campo full">
+            <label>Cliente</label>
+            <select asp-for="ClienteId" required>
+                <option value="">-- Seleccionar cliente --</option>
+                @foreach (var c in clientes)
+                {
+                    <option value="@c.Id">@c.Nombres @c.Apellidos (@c.Dni)</option>
+                }
+            </select>
+        </div>
+
+        <div class="campo">
+            <label>Tipo de proceso</label>
+            <select asp-for="TipoProcesoId" required>
+                <option value="">-- Seleccionar tipo --</option>
+                @foreach (var t in tiposProceso)
+                {
+                    <option value="@t.Id">@t.Nombre</option>
+                }
+            </select>
+        </div>
+        <div class="campo"><label asp-for="Materia">Materia</label><input asp-for="Materia" required></div>
+
+        <div class="campo full"><label asp-for="Descripcion">Descripción del caso</label><textarea asp-for="Descripcion" rows="3"></textarea></div>
+
+        <div class="campo"><label asp-for="NumeroExpediente">N° de expediente (si corresponde)</label><input asp-for="NumeroExpediente"></div>
+        <div class="campo"><label asp-for="EntidadRelacionada">Entidad relacionada</label><input asp-for="EntidadRelacionada"></div>
+        <div class="campo"><label asp-for="JuzgadoFiscalia">Juzgado / Fiscalía</label><input asp-for="JuzgadoFiscalia"></div>
+        <div class="campo"><label asp-for="DistritoJudicial">Distrito judicial</label><input asp-for="DistritoJudicial"></div>
+        <div class="campo"><label asp-for="FechaInicio">Fecha de inicio</label><input asp-for="FechaInicio" type="date" value="@Model.FechaInicio?.ToString("yyyy-MM-dd")"></div>
+
+        <div class="campo">
+            <label>Estado</label>
+            <select asp-for="Estado">
+                @foreach (var e in (DashboardJym.Models.EstadoProceso[])ViewBag.Estados)
+                {
+                    <option value="@e">@e</option>
+                }
+            </select>
+        </div>
+        <div class="campo">
+            <label>Prioridad</label>
+            <select asp-for="Prioridad">
+                @foreach (var p in (DashboardJym.Models.PrioridadProceso[])ViewBag.Prioridades)
+                {
+                    <option value="@p">@p</option>
+                }
+            </select>
+        </div>
+
+        <div class="campo">
+            <label>Abogado responsable</label>
+            <select asp-for="AbogadoResponsableId">
+                <option value="">-- Sin asignar --</option>
+                @foreach (var u in usuarios)
+                {
+                    <option value="@u.Id">@u.Nombres @u.Apellidos</option>
+                }
+            </select>
+        </div>
+        <div class="campo">
+            <label>Asesor legal responsable</label>
+            <select asp-for="AsesorResponsableId">
+                <option value="">-- Sin asignar --</option>
+                @foreach (var u in usuarios)
+                {
+                    <option value="@u.Id">@u.Nombres @u.Apellidos</option>
+                }
+            </select>
+        </div>
+
+        <div class="campo full"><label asp-for="Observaciones">Observaciones</label><textarea asp-for="Observaciones" rows="3"></textarea></div>
+    </div>
+
+    <button type="submit" class="btn btn-primario" style="margin-top:16px;">@(esNuevo ? "Registrar proceso" : "Guardar cambios")</button>
+</form>

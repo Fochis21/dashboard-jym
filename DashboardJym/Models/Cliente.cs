@@ -1,0 +1,44 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DashboardJym.Models;
+
+[Table("clientes")]
+public class Cliente
+{
+    [Key]
+    public long Id { get; set; }
+
+    [Required, MaxLength(100)]
+    public string Nombres { get; set; } = string.Empty;
+
+    [Required, MaxLength(100)]
+    public string Apellidos { get; set; } = string.Empty;
+
+    [Required, MaxLength(20)]
+    public string Dni { get; set; } = string.Empty;
+
+    [DataType(DataType.Date)]
+    public DateTime? FechaNacimiento { get; set; }
+
+    [MaxLength(20)]
+    public string? Whatsapp { get; set; }
+
+    [MaxLength(150)]
+    public string? Correo { get; set; }
+
+    public string? Observaciones { get; set; }
+
+    [Column("usuario_registro_id")]
+    public long UsuarioRegistroId { get; set; }
+
+    public Usuario? UsuarioRegistro { get; set; }
+
+    public bool Estado { get; set; } = true;
+
+    [Column("fecha_registro")]
+    public DateTime? FechaRegistro { get; set; }
+
+    [Column("fecha_actualizacion")]
+    public DateTime? FechaActualizacion { get; set; }
+}

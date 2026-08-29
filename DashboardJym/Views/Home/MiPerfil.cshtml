@@ -1,0 +1,13 @@
+@model DashboardJym.Models.Usuario
+@{
+    ViewData["Title"] = "Mi perfil";
+}
+
+<h1>Mi perfil</h1>
+<dl>
+    <dt>Nombres</dt><dd>@Model.Nombres</dd>
+    <dt>Apellidos</dt><dd>@Model.Apellidos</dd>
+    <dt>DNI</dt><dd>@Model.Dni</dd>
+    <dt>Correo</dt><dd>@Model.Correo</dd>
+    <dt>Teléfono</dt><dd>@Model.Telefono</dd>
+</dl>

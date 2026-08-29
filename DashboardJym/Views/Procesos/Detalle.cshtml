@@ -1,0 +1,26 @@
+@model DashboardJym.Models.Proceso
+@{
+    ViewData["Title"] = "Detalle de proceso";
+}
+
+<h1>@Model.Materia</h1>
+
+<dl>
+    <dt>Cliente</dt><dd><a asp-controller="Clientes" asp-action="VerDetalle" asp-route-id="@Model.Cliente!.Id">@Model.Cliente.Nombres @Model.Cliente.Apellidos</a></dd>
+    <dt>Tipo de proceso</dt><dd>@Model.TipoProceso?.Nombre</dd>
+    <dt>Descripción</dt><dd>@Model.Descripcion</dd>
+    <dt>N° de expediente</dt><dd>@Model.NumeroExpediente</dd>
+    <dt>Entidad relacionada</dt><dd>@Model.EntidadRelacionada</dd>
+    <dt>Juzgado / Fiscalía</dt><dd>@Model.JuzgadoFiscalia</dd>
+    <dt>Distrito judicial</dt><dd>@Model.DistritoJudicial</dd>
+    <dt>Fecha de inicio</dt><dd>@(Model.FechaInicio?.ToString("dd/MM/yyyy"))</dd>
+    <dt>Estado</dt><dd><span class="badge @Model.Estado">@Model.Estado</span></dd>
+    <dt>Prioridad</dt><dd><span class="badge prio-@Model.Prioridad">@Model.Prioridad</span></dd>
+    <dt>Abogado responsable</dt><dd>@(Model.AbogadoResponsable != null ? $"{Model.AbogadoResponsable.Nombres} {Model.AbogadoResponsable.Apellidos}" : "-")</dd>
+    <dt>Asesor responsable</dt><dd>@(Model.AsesorResponsable != null ? $"{Model.AsesorResponsable.Nombres} {Model.AsesorResponsable.Apellidos}" : "-")</dd>
+    <dt>Observaciones</dt><dd>@Model.Observaciones</dd>
+    <dt>Registrado por</dt><dd>@Model.UsuarioRegistro?.NombreCompleto</dd>
+    <dt>Fecha de registro</dt><dd>@(Model.FechaRegistro?.ToString("dd/MM/yyyy HH:mm"))</dd>
+</dl>
+
+<a class="btn btn-primario" asp-action="FormularioEditar" asp-route-id="@Model.Id"><i class="bi bi-pencil"></i> Editar proceso</a>

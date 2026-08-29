@@ -1,0 +1,67 @@
+@model DashboardJym.Models.Pago
+@{
+    ViewData["Title"] = "Registrar pago";
+    var clientes = (List<DashboardJym.Models.Cliente>)ViewBag.Clientes;
+    var procesos = (List<DashboardJym.Models.Proceso>)ViewBag.Procesos;
+}
+
+<h1>Registrar pago</h1>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <p class="error">Revisa los campos marcados: hay datos obligatorios o inválidos.</p>
+}
+
+<form method="post" asp-action="Registrar">
+    @Html.AntiForgeryToken()
+
+    <div class="grid">
+        <div class="campo">
+            <label>Cliente</label>
+            <select asp-for="ClienteId" required>
+                <option value="">-- Seleccionar cliente --</option>
+                @foreach (var c in clientes)
+                {
+                    <option value="@c.Id">@c.Nombres @c.Apellidos (@c.Dni)</option>
+                }
+            </select>
+        </div>
+        <div class="campo">
+            <label>Proceso (opcional)</label>
+            <select asp-for="ProcesoId">
+                <option value="">-- Sin asociar --</option>
+                @foreach (var p in procesos)
+                {
+                    <option value="@p.Id">@p.Materia (@p.Cliente?.Nombres @p.Cliente?.Apellidos)</option>
+                }
+            </select>
+        </div>
+
+        <div class="campo full"><label asp-for="Concepto">Concepto</label><input asp-for="Concepto" required></div>
+
+        <div class="campo"><label asp-for="MontoTotal">Monto total (S/)</label><input asp-for="MontoTotal" type="number" step="0.01" min="0.01" required></div>
+
+        <div class="campo">
+            <label>Forma de pago</label>
+            <select asp-for="FormaPago">
+                @foreach (var f in (DashboardJym.Models.FormaPago[])ViewBag.FormasPago)
+                {
+                    <option value="@f">@f</option>
+                }
+            </select>
+        </div>
+        <div class="campo"><label asp-for="FechaPago">Fecha de pago</label><input asp-for="FechaPago" type="date" value="@Model.FechaPago.ToString("yyyy-MM-dd")" required></div>
+
+        <div class="campo full"><label asp-for="Observaciones">Observaciones</label><textarea asp-for="Observaciones" rows="3"></textarea></div>
+    </div>
+
+    <p style="color:var(--gris-texto); font-size:12.5px; max-width:600px;">
+        Las cuotas se generan automáticamente con la estructura del estudio:
+        <strong>50% al inicio</strong>, y el resto dividido en dos cuotas del
+        <strong>25%</strong> cada una (vencimientos al mes y a los dos meses
+        de la fecha de pago). Otro usuario (no tú) deberá confirmar u
+        observar este pago después.
+    </p>
+
+    <button type="submit" class="btn btn-primario" style="margin-top:10px;">Registrar pago</button>
+</form>
