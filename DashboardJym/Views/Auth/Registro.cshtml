@@ -53,7 +53,15 @@
                         <div class="campo"><label asp-for="Dni">DNI</label><input asp-for="Dni" maxlength="20" required></div>
                         <div class="campo"><label asp-for="Telefono">Teléfono</label><input asp-for="Telefono"></div>
                         <div class="campo full"><label asp-for="Correo">Correo</label><input asp-for="Correo" type="email" required></div>
-                        <div class="campo"><label asp-for="Password">Contraseña</label><input asp-for="Password" type="password" required></div>
+                        <div class="campo">
+                            <label asp-for="Password">Contraseña</label>
+                            <div class="campo-password">
+                                <input asp-for="Password" id="passwordInput" type="password" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Mostrar contraseña" tabindex="-1">
+                                    <i class="bi bi-eye" id="passwordIcon"></i>
+                                </button>
+                            </div>
+                        </div>
                         <div class="campo">
                             <label asp-for="Rol">Rol</label>
                             <select asp-for="Rol" required>
@@ -73,5 +81,20 @@
             </div>
         </div>
     </div>
+    <script>
+        function togglePassword() {
+            const input = document.getElementById('passwordInput');
+            const icon = document.getElementById('passwordIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        }
+    </script>
 </body>
 </html>

@@ -318,6 +318,15 @@ tbody tr:last-child td { border-bottom: none; }
 .campo label { font-size: 12px; color: var(--gris-texto); margin-bottom: 5px; font-weight: 600; letter-spacing: .2px; }
 .full { grid-column: 1 / -1; }
 
+.campo-password { position: relative; display: flex; align-items: center; }
+.campo-password input { width: 100%; padding-right: 40px; }
+.toggle-password {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; padding: 0; cursor: pointer;
+    color: var(--gris-texto); font-size: 16px; line-height: 1; display: flex;
+}
+.toggle-password:hover { color: var(--gris-oscuro, #333); }
+
 dl {
     display: grid; grid-template-columns: 200px 1fr; row-gap: 12px; max-width: 700px;
     background: #fff; border: 1px solid var(--gris-medio); border-radius: var(--radius);
