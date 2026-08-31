@@ -167,6 +167,17 @@ h2 {
 }
 .sidebar .logout button:hover { background: var(--red); border-color: var(--red); color:#fff; }
 
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 21, 33, 0.55);
+    z-index: 19;
+    opacity: 0;
+    transition: opacity .2s;
+}
+.sidebar-backdrop.visible { display: block; opacity: 1; }
+
 .main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; max-width: 100%; margin-left: 18px; }
 
 .topbar {
@@ -181,6 +192,25 @@ h2 {
     top: 0;
     z-index: 10;
 }
+.topbar-izq { display: flex; align-items: center; gap: 14px; min-width: 0; }
+
+.menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 1px solid var(--gris-medio);
+    background: #fff;
+    color: var(--navy);
+    border-radius: var(--radius-sm);
+    font-size: 17px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+}
+.menu-toggle:hover { background: var(--gris-claro); border-color: var(--navy); }
+
 .topbar .titulo-pagina {
     font-family: var(--font-body);
     font-weight: 700;
@@ -188,6 +218,9 @@ h2 {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 1.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .topbar .titulo-pagina::before {
     content: 'Panel';
@@ -197,7 +230,7 @@ h2 {
     padding-right: 8px;
     border-right: 1px solid var(--gris-medio);
 }
-.topbar .usuario-info { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--gris-texto); }
+.topbar .usuario-info { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--gris-texto); flex-shrink: 0; }
 .topbar .usuario-info .nombre { color: var(--texto); font-weight: 700; }
 .topbar .usuario-info .rol {
     font-size: 10.5px; background: var(--gris-claro); padding: 3px 9px; border-radius: 20px;
@@ -227,6 +260,11 @@ input[type=date], input[type=time], select, textarea {
 }
 input:focus, select:focus, textarea:focus {
     outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(13,27,42,0.08);
+}
+
+a:focus-visible, button:focus-visible, .btn:focus-visible, .sidebar a.item:focus-visible, .menu-toggle:focus-visible {
+    outline: 2px solid var(--navy);
+    outline-offset: 2px;
 }
 
 .btn {
@@ -331,7 +369,7 @@ dd { margin: 0; font-size: 13.5px; }
 .login-caja .campo { margin-bottom: 0; }
 .login-caja a { color: var(--red); font-weight: 600; text-decoration: none; }
 .login-caja a:hover { text-decoration: underline; }
-.login-caja .grid { max-width: none; gap: 14px 18px; }
+.login-caja .grid, .login-caja .grid-2col { max-width: none; gap: 14px 18px; }
 
 @media (max-width: 860px) {
     .login-panel-brand { display: none; }
@@ -389,3 +427,77 @@ table.calendario td { height: 96px; vertical-align: top; padding: 8px; }
 .error-box h1 { font-size: 20px; }
 .error-box a { color: var(--navy); font-weight: 700; text-decoration: none; }
 .error-box a:hover { color: var(--red); }
+
+/* ---------- Grid de 2 columnas reutilizable (login/registro) ---------- */
+.grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+
+/* Tablet: el sidebar pasa a panel deslizable sobre el contenido */
+@media (max-width: 992px) {
+    .menu-toggle { display: inline-flex; }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 20;
+        transform: translateX(-100%);
+        transition: transform .22s ease;
+        box-shadow: var(--shadow-lg);
+    }
+    .sidebar.abierto { transform: translateX(0); }
+
+    .main-area { margin-left: 0; }
+
+    body.bloqueo-scroll { overflow: hidden; }
+}
+
+/* Tablet / pantallas medianas: formularios y paneles a una columna */
+@media (max-width: 860px) {
+    .paneles { grid-template-columns: 1fr; }
+
+    .grid { grid-template-columns: 1fr; max-width: 560px; }
+    .grid-2col { grid-template-columns: 1fr; }
+
+    dl { grid-template-columns: 140px 1fr; }
+}
+
+/* Móvil */
+@media (max-width: 620px) {
+    .content { padding: 18px 16px; }
+    .topbar { padding: 12px 16px; }
+
+    h1 { font-size: 21px; margin-bottom: 18px; }
+    h2 { font-size: 16.5px; }
+
+    .topbar .titulo-pagina::before { content: none; }
+    .topbar .titulo-pagina { max-width: 38vw; }
+    .topbar .usuario-info { gap: 12px; }
+    .topbar .usuario-info .rol { display: none; }
+
+    .barra { flex-direction: column; align-items: stretch; }
+    .barra form { width: 100%; }
+    .barra form input[type=text] { flex: 1; min-width: 0; }
+    .barra .btn { justify-content: center; }
+    .barra > a.btn { width: 100%; }
+
+    dl { grid-template-columns: 1fr; row-gap: 4px; padding: 16px 18px; }
+    dt { margin-top: 10px; }
+    dt:first-child { margin-top: 0; }
+
+    .caja-accion, .card { padding: 14px; }
+
+    .login-panel-form { padding: 40px 22px; }
+
+    table.calendario td { height: 76px; padding: 6px; }
+    .evento { font-size: 10px; }
+
+    .hilo { max-width: 100%; }
+    .burbuja { max-width: 88%; }
+
+    .item-notif { flex-direction: column; align-items: stretch; }
+}

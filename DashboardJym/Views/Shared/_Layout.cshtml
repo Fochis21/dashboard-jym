@@ -12,7 +12,8 @@
 </head>
 <body>
     <div class="app-shell">
-        <aside class="sidebar">
+        <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+        <aside class="sidebar" id="sidebar">
             <div class="logo">
                 <div class="logo-badge"><img src="~/img/logo-white.png" alt="Estudio Jurídico JYM" /></div>
             </div>
@@ -37,7 +38,12 @@
 
         <div class="main-area">
             <header class="topbar">
-                <span class="titulo-pagina">@ViewData["Title"]</span>
+                <div class="topbar-izq">
+                    <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Abrir menú" aria-controls="sidebar" aria-expanded="false">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <span class="titulo-pagina">@ViewData["Title"]</span>
+                </div>
                 <div class="usuario-info">
                     <a class="campana" href="/app/notificaciones">
                         <i class="bi bi-bell"></i>
@@ -74,6 +80,40 @@
                 }
             });
             if (mejor) { mejor.classList.add('activo'); }
+        })();
+
+        (function () {
+            var sidebar = document.getElementById('sidebar');
+            var toggle = document.getElementById('menu-toggle');
+            var backdrop = document.getElementById('sidebar-backdrop');
+            if (!sidebar || !toggle || !backdrop) return;
+
+            function abrir() {
+                sidebar.classList.add('abierto');
+                backdrop.classList.add('visible');
+                toggle.setAttribute('aria-expanded', 'true');
+                document.body.classList.add('bloqueo-scroll');
+            }
+            function cerrar() {
+                sidebar.classList.remove('abierto');
+                backdrop.classList.remove('visible');
+                toggle.setAttribute('aria-expanded', 'false');
+                document.body.classList.remove('bloqueo-scroll');
+            }
+
+            toggle.addEventListener('click', function () {
+                sidebar.classList.contains('abierto') ? cerrar() : abrir();
+            });
+            backdrop.addEventListener('click', cerrar);
+            document.querySelectorAll('#nav-lateral a.item').forEach(function (a) {
+                a.addEventListener('click', cerrar);
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') cerrar();
+            });
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 992) cerrar();
+            });
         })();
     </script>
     @await RenderSectionAsync("Scripts", required: false)

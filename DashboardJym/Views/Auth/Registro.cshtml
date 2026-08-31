@@ -47,7 +47,7 @@
 
                 <form method="post" asp-controller="Auth" asp-action="Registro">
                     @Html.AntiForgeryToken()
-                    <div class="grid" style="grid-template-columns:1fr 1fr;">
+                    <div class="grid-2col">
                         <div class="campo"><label asp-for="Nombres">Nombres</label><input asp-for="Nombres" required></div>
                         <div class="campo"><label asp-for="Apellidos">Apellidos</label><input asp-for="Apellidos" required></div>
                         <div class="campo"><label asp-for="Dni">DNI</label><input asp-for="Dni" maxlength="20" required></div>
