@@ -71,16 +71,6 @@
         </div>
 
         <div class="campo">
-            <label>Abogado responsable</label>
-            <select asp-for="AbogadoResponsableId">
-                <option value="">-- Sin asignar --</option>
-                @foreach (var u in usuarios)
-                {
-                    <option value="@u.Id">@u.Nombres @u.Apellidos</option>
-                }
-            </select>
-        </div>
-        <div class="campo">
             <label>Asesor legal responsable</label>
             <select asp-for="AsesorResponsableId">
                 <option value="">-- Sin asignar --</option>

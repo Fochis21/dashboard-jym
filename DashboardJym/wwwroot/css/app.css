@@ -309,6 +309,11 @@ tbody tr:last-child td { border-bottom: none; }
 .CONFIRMADO, .CONFIRMADA, .PAGADA, .REALIZADA { background: var(--verde-ok); }
 .OBSERVADO, .OBSERVADA, .CANCELADA { background: var(--red); }
 .ANULADO, .ANULADA { background: #6b7280; }
+.NUEVO { background: var(--navy-soft); }
+.EN_PROCESO { background: var(--ambar); }
+.EN_ESPERA { background: #b8621b; }
+.FINALIZADO { background: var(--verde-ok); }
+.ARCHIVADO { background: #6b7280; }
 .prio-URGENTE, .prio-ALTA { background: var(--red); }
 .prio-MEDIA { background: var(--ambar); }
 .prio-BAJA { background: var(--verde-ok); }
@@ -374,6 +379,8 @@ dd { margin: 0; font-size: 13.5px; }
 .login-caja p.sub { color: var(--gris-texto); font-size: 13px; margin-top: 0; margin-bottom: 26px; }
 .login-caja label { display:block; font-size:12.5px; margin-bottom:5px; color:var(--gris-texto); font-weight: 600; }
 .login-caja input { width:100%; margin-bottom:16px; }
+.login-caja .campo-password { margin-bottom: 16px; }
+.login-caja .campo-password input { margin-bottom: 0; }
 .login-caja button { width:100%; padding:11px; justify-content: center; font-size: 13.5px; }
 .login-caja .campo { margin-bottom: 0; }
 .login-caja a { color: var(--red); font-weight: 600; text-decoration: none; }

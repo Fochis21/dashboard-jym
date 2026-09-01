@@ -16,7 +16,6 @@
     <dt>Fecha de inicio</dt><dd>@(Model.FechaInicio?.ToString("dd/MM/yyyy"))</dd>
     <dt>Estado</dt><dd><span class="badge @Model.Estado">@Model.Estado</span></dd>
     <dt>Prioridad</dt><dd><span class="badge prio-@Model.Prioridad">@Model.Prioridad</span></dd>
-    <dt>Abogado responsable</dt><dd>@(Model.AbogadoResponsable != null ? $"{Model.AbogadoResponsable.Nombres} {Model.AbogadoResponsable.Apellidos}" : "-")</dd>
     <dt>Asesor responsable</dt><dd>@(Model.AsesorResponsable != null ? $"{Model.AsesorResponsable.Nombres} {Model.AsesorResponsable.Apellidos}" : "-")</dd>
     <dt>Observaciones</dt><dd>@Model.Observaciones</dd>
     <dt>Registrado por</dt><dd>@Model.UsuarioRegistro?.NombreCompleto</dd>

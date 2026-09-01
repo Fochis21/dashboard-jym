@@ -34,7 +34,7 @@
                 <td>@(p.FechaInicio?.ToString("dd/MM/yyyy") ?? "-")</td>
                 <td><span class="badge @p.Estado">@p.Estado</span></td>
                 <td><span class="badge prio-@p.Prioridad">@p.Prioridad</span></td>
-                <td>@(p.AbogadoResponsable != null ? p.AbogadoResponsable.Nombres : "-")</td>
+                <td>@(p.AsesorResponsable != null ? p.AsesorResponsable.Nombres : "-")</td>
                 <td>
                     <a asp-action="VerDetalle" asp-route-id="@p.Id">Ver</a>
                     &nbsp;|&nbsp;
