@@ -327,7 +327,7 @@ tbody tr:last-child td { border-bottom: none; }
 .campo-password input { width: 100%; padding-right: 40px; }
 .toggle-password {
     position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-    background: none; border: none; padding: 0; cursor: pointer;
+    background: none; border: none; padding: 0; cursor: pointer; z-index: 2;
     color: var(--gris-texto); font-size: 16px; line-height: 1; display: flex;
 }
 .toggle-password:hover { color: var(--gris-oscuro, #333); }
