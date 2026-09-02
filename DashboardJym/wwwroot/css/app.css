@@ -268,14 +268,14 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, .sidebar a.item:focus
 }
 
 .btn {
-    padding: 9px 16px; border: none; border-radius: var(--radius-sm); cursor: pointer;
+    padding: 10px 18px; border: none; border-radius: var(--radius-sm); cursor: pointer;
     text-decoration: none; font-size: 13px; display: inline-flex; align-items:center; gap:7px;
     font-weight: 700; font-family: var(--font-body); letter-spacing: .2px;
-    transition: background .15s, box-shadow .15s, transform .1s;
+    transition: background .15s, box-shadow .15s, transform .15s;
 }
-.btn:active { transform: translateY(1px); }
-.btn-primario { background: var(--navy); color: #fff; }
-.btn-primario:hover { background: var(--navy-soft); }
+.btn:active { transform: translateY(1px); box-shadow: none; }
+.btn-primario { background: var(--navy); color: #fff; box-shadow: 0 3px 10px rgba(13,27,42,.22); }
+.btn-primario:hover { background: var(--navy-soft); box-shadow: 0 5px 14px rgba(13,27,42,.3); transform: translateY(-1px); }
 .btn-peligro { background: var(--red); color: #fff; }
 .btn-peligro:hover { background: var(--red-dark); }
 .btn-confirmar { background: var(--verde-ok); color: #fff; }
@@ -324,13 +324,16 @@ tbody tr:last-child td { border-bottom: none; }
 .full { grid-column: 1 / -1; }
 
 .campo-password { position: relative; display: flex; align-items: center; }
-.campo-password input { width: 100%; padding-right: 40px; }
+.campo-password input { width: 100%; padding-right: 42px; }
 .toggle-password {
-    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-    background: none; border: none; padding: 0; cursor: pointer; z-index: 2;
-    color: var(--gris-texto); font-size: 16px; line-height: 1; display: flex;
+    position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+    width: 32px; height: 32px; min-width: 32px;
+    background: transparent; border: none; border-radius: 50%; padding: 0; cursor: pointer; z-index: 2;
+    color: var(--gris-texto); font-size: 16px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s, color .15s;
 }
-.toggle-password:hover { color: var(--gris-oscuro, #333); }
+.toggle-password:hover, .toggle-password:focus-visible { background: var(--gris-claro); color: var(--navy); }
 
 dl {
     display: grid; grid-template-columns: 200px 1fr; row-gap: 12px; max-width: 700px;
@@ -381,7 +384,9 @@ dd { margin: 0; font-size: 13.5px; }
 .login-caja input { width:100%; margin-bottom:16px; }
 .login-caja .campo-password { margin-bottom: 16px; }
 .login-caja .campo-password input { margin-bottom: 0; }
-.login-caja button { width:100%; padding:11px; justify-content: center; font-size: 13.5px; }
+.login-caja button { width:100%; padding:12px; justify-content: center; font-size: 14px; letter-spacing: .3px; }
+.login-caja .toggle-password { width: 32px; padding: 0; }
+.login-caja button[type=submit] { margin-top: 6px; }
 .login-caja .campo { margin-bottom: 0; }
 .login-caja a { color: var(--red); font-weight: 600; text-decoration: none; }
 .login-caja a:hover { text-decoration: underline; }
