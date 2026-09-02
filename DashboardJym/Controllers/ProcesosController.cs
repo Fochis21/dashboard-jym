@@ -30,6 +30,7 @@ public class ProcesosController : Controller
             .Include(p => p.Cliente)
             .Include(p => p.TipoProceso)
             .Include(p => p.AsesorResponsable)
+            .Include(p => p.AbogadoResponsable)
             .AsQueryable();
 
         if (clienteId.HasValue)

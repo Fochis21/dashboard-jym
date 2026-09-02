@@ -22,7 +22,7 @@
 <div class="tabla-wrap">
 <table>
     <thead>
-        <tr><th>Cliente</th><th>Materia</th><th>Tipo</th><th>Fecha de inicio</th><th>Estado</th><th>Prioridad</th><th>Responsable</th><th></th></tr>
+        <tr><th>Cliente</th><th>Materia</th><th>Tipo</th><th>Fecha de inicio</th><th>Estado</th><th>Prioridad</th><th>Asesor</th><th>Abogado</th><th></th></tr>
     </thead>
     <tbody>
         @foreach (var p in Model)
@@ -35,6 +35,7 @@
                 <td><span class="badge @p.Estado">@p.Estado</span></td>
                 <td><span class="badge prio-@p.Prioridad">@p.Prioridad</span></td>
                 <td>@(p.AsesorResponsable != null ? p.AsesorResponsable.Nombres : "-")</td>
+                <td>@(p.AbogadoResponsable != null ? p.AbogadoResponsable.Nombres : "Sin derivar")</td>
                 <td>
                     <a asp-action="VerDetalle" asp-route-id="@p.Id">Ver</a>
                     &nbsp;|&nbsp;
