@@ -31,6 +31,9 @@ public class Proceso
     [Column("juzgado_fiscalia"), MaxLength(200)]
     public string? JuzgadoFiscalia { get; set; }
 
+    [Column("especialista_legal"), MaxLength(200)]
+    public string? EspecialistaLegal { get; set; }
+
     [Column("distrito_judicial"), MaxLength(100)]
     public string? DistritoJudicial { get; set; }
 

@@ -22,6 +22,11 @@ public class RegistroViewModel
     [Required, MinLength(6)]
     public string Password { get; set; } = string.Empty;
 
+    // Código compartido solo con el equipo del estudio; evita que cualquier
+    // persona en internet pueda crear su propia cuenta desde /auth/registro.
+    [Required]
+    public string CodigoInvitacion { get; set; } = string.Empty;
+
     // Solo define el rol elegido en el registro; ABOGADO y ASESOR_LEGAL
     // no tienen ninguna diferencia de permisos en el sistema.
     [Required]

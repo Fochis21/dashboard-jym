@@ -18,10 +18,12 @@ public class AuthController : Controller
     private static readonly string[] RolesPermitidos = { "ABOGADO", "ASESOR_LEGAL" };
 
     private readonly AppDbContext _context;
+    private readonly IConfiguration _configuracion;
 
-    public AuthController(AppDbContext context)
+    public AuthController(AppDbContext context, IConfiguration configuracion)
     {
         _context = context;
+        _configuracion = configuracion;
     }
 
     [HttpGet("/auth/login")]
@@ -82,6 +84,15 @@ public class AuthController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Registro(RegistroViewModel modelo)
     {
+        // Bloquea el autorregistro a cualquiera de internet: el codigo debe
+        // coincidir con el configurado en el servidor (variable de entorno
+        // "CodigoInvitacion"), que solo conoce el equipo del estudio.
+        var codigoValido = _configuracion["CodigoInvitacion"];
+        if (string.IsNullOrEmpty(codigoValido) || modelo.CodigoInvitacion != codigoValido)
+        {
+            ModelState.AddModelError(nameof(modelo.CodigoInvitacion), "Código de invitación inválido.");
+        }
+
         if (!RolesPermitidos.Contains(modelo.Rol))
         {
             ModelState.AddModelError(nameof(modelo.Rol), "Selecciona un rol válido.");

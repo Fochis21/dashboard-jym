@@ -15,8 +15,8 @@ public class Cliente
     [Required, MaxLength(100)]
     public string Apellidos { get; set; } = string.Empty;
 
-    [Required, MaxLength(20)]
-    public string Dni { get; set; } = string.Empty;
+    [MaxLength(20)]
+    public string? Dni { get; set; }
 
     [DataType(DataType.Date)]
     public DateTime? FechaNacimiento { get; set; }
