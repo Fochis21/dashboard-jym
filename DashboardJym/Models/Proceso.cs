@@ -25,9 +25,6 @@ public class Proceso
     [Column("numero_expediente"), MaxLength(100)]
     public string? NumeroExpediente { get; set; }
 
-    [Column("entidad_relacionada"), MaxLength(200)]
-    public string? EntidadRelacionada { get; set; }
-
     [Column("juzgado_fiscalia"), MaxLength(200)]
     public string? JuzgadoFiscalia { get; set; }
 

@@ -18,8 +18,17 @@ public class Cliente
     [MaxLength(20)]
     public string? Dni { get; set; }
 
+    [Column("fecha_emision_dni"), DataType(DataType.Date)]
+    public DateTime? FechaEmisionDni { get; set; }
+
     [DataType(DataType.Date)]
     public DateTime? FechaNacimiento { get; set; }
+
+    [Column("nombre_padre"), MaxLength(100)]
+    public string? NombrePadre { get; set; }
+
+    [Column("nombre_madre"), MaxLength(100)]
+    public string? NombreMadre { get; set; }
 
     [MaxLength(20)]
     public string? Whatsapp { get; set; }

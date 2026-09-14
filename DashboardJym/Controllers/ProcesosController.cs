@@ -114,7 +114,10 @@ public class ProcesosController : Controller
     [HttpGet("{id:long}/editar")]
     public async Task<IActionResult> FormularioEditar(long id)
     {
-        var proceso = await _context.Procesos.FindAsync(id);
+        var proceso = await _context.Procesos
+            .Include(p => p.Cliente)
+            .Include(p => p.TipoProceso)
+            .FirstOrDefaultAsync(p => p.Id == id);
         if (proceso == null) return NotFound();
 
         ViewData["Title"] = "Editar proceso";
@@ -151,7 +154,6 @@ public class ProcesosController : Controller
         proceso.Materia = datos.Materia;
         proceso.Descripcion = datos.Descripcion;
         proceso.NumeroExpediente = datos.NumeroExpediente;
-        proceso.EntidadRelacionada = datos.EntidadRelacionada;
         proceso.JuzgadoFiscalia = datos.JuzgadoFiscalia;
         proceso.DistritoJudicial = datos.DistritoJudicial;
         proceso.FechaInicio = datos.FechaInicio;
@@ -193,8 +195,34 @@ public class ProcesosController : Controller
     private async Task CargarListasApoyoAsync()
     {
         ViewBag.Clientes = await _context.Clientes.Where(c => c.Estado).OrderBy(c => c.Apellidos).ToListAsync();
-        ViewBag.TiposProceso = await _context.TiposProceso.Where(t => t.Estado).OrderBy(t => t.Nombre).ToListAsync();
-        ViewBag.Usuarios = await _context.Usuarios.Where(u => u.Estado).OrderBy(u => u.Nombres).ToListAsync();
+
+        // Se deduplica por nombre en memoria: puede haber tipos de proceso
+        // repetidos cargados históricamente en la tabla y no queremos que
+        // se vean duplicados en el selector.
+        var tipos = await _context.TiposProceso.Where(t => t.Estado).OrderBy(t => t.Nombre).ToListAsync();
+        ViewBag.TiposProceso = tipos
+            .GroupBy(t => t.Nombre.Trim(), StringComparer.OrdinalIgnoreCase)
+            .Select(g => g.First())
+            .OrderBy(t => t.Nombre)
+            .ToList();
+
+        var usuarios = await _context.Usuarios
+            .Where(u => u.Estado)
+            .Include(u => u.UsuarioRoles).ThenInclude(ur => ur.Rol)
+            .OrderBy(u => u.Nombres)
+            .ToListAsync();
+        ViewBag.Asesores = usuarios.Where(u => u.UsuarioRoles.Any(ur => ur.Rol.Nombre == "ASESOR_LEGAL")).ToList();
+        ViewBag.Abogados = usuarios.Where(u => u.UsuarioRoles.Any(ur => ur.Rol.Nombre == "ABOGADO")).ToList();
+
+        // Juzgados/fiscalías ya usados en procesos existentes, sin repetir,
+        // para sugerirlos como autocompletado en vez de repetir texto libre.
+        ViewBag.Juzgados = await _context.Procesos
+            .Where(p => p.JuzgadoFiscalia != null && p.JuzgadoFiscalia != "")
+            .Select(p => p.JuzgadoFiscalia!.Trim())
+            .Distinct()
+            .OrderBy(j => j)
+            .ToListAsync();
+
         ViewBag.Estados = Enum.GetValues<EstadoProceso>();
         ViewBag.Prioridades = Enum.GetValues<PrioridadProceso>();
     }

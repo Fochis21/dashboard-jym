@@ -7,7 +7,10 @@
 
 <dl>
     <dt>DNI</dt><dd>@Model.Dni</dd>
+    <dt>Fecha de emisión del DNI</dt><dd>@(Model.FechaEmisionDni?.ToString("dd/MM/yyyy"))</dd>
     <dt>Fecha de nacimiento</dt><dd>@(Model.FechaNacimiento?.ToString("dd/MM/yyyy"))</dd>
+    <dt>Primer nombre del padre</dt><dd>@Model.NombrePadre</dd>
+    <dt>Primer nombre de la madre</dt><dd>@Model.NombreMadre</dd>
     <dt>WhatsApp</dt><dd>@Model.Whatsapp</dd>
     <dt>Correo</dt><dd>@Model.Correo</dd>
     <dt>Observaciones</dt><dd>@Model.Observaciones</dd>

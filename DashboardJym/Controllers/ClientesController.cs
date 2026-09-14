@@ -116,7 +116,10 @@ public class ClientesController : Controller
         cliente.Nombres = datos.Nombres;
         cliente.Apellidos = datos.Apellidos;
         cliente.Dni = datos.Dni;
+        cliente.FechaEmisionDni = datos.FechaEmisionDni;
         cliente.FechaNacimiento = datos.FechaNacimiento;
+        cliente.NombrePadre = datos.NombrePadre;
+        cliente.NombreMadre = datos.NombreMadre;
         cliente.Whatsapp = datos.Whatsapp;
         cliente.Correo = datos.Correo;
         cliente.Observaciones = datos.Observaciones;

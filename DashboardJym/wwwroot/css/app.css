@@ -321,6 +321,17 @@ tbody tr:last-child td { border-bottom: none; }
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; max-width: 840px; }
 .campo { display: flex; flex-direction: column; }
 .campo label { font-size: 12px; color: var(--gris-texto); margin-bottom: 5px; font-weight: 600; letter-spacing: .2px; }
+
+.buscable { position: relative; }
+.buscable-lista {
+    display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 50;
+    background: #fff; border: 1px solid #d3d8e2; border-radius: var(--radius-sm);
+    max-height: 230px; overflow-y: auto; box-shadow: 0 8px 20px rgba(13,27,42,.12);
+}
+.buscable-lista.activa { display: block; }
+.buscable-lista .opcion { padding: 8px 12px; font-size: 13px; cursor: pointer; }
+.buscable-lista .opcion:hover { background: var(--gris-claro); }
+.buscable-lista .vacio { padding: 8px 12px; font-size: 12.5px; color: var(--gris-texto); font-style: italic; }
 .full { grid-column: 1 / -1; }
 
 .campo-password { position: relative; display: flex; align-items: center; }
