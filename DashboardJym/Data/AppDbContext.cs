@@ -108,6 +108,7 @@ public class AppDbContext : DbContext
         // pagos / cuotas / abonos: FKs y enums como texto
         modelBuilder.Entity<Pago>().Property(p => p.FormaPago).HasConversion<string>().HasMaxLength(20);
         modelBuilder.Entity<Pago>().Property(p => p.Estado).HasConversion<string>().HasMaxLength(20);
+        modelBuilder.Entity<Pago>().Property(p => p.TipoPago).HasConversion<string>().HasMaxLength(20);
 
         modelBuilder.Entity<Pago>()
             .HasOne(p => p.Cliente).WithMany().HasForeignKey(p => p.ClienteId).OnDelete(DeleteBehavior.Restrict);

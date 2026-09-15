@@ -24,3 +24,9 @@ public enum EstadoCuota
     OBSERVADA,
     ANULADA
 }
+
+public enum TipoPago
+{
+    HONORARIOS,
+    EXTRA
+}

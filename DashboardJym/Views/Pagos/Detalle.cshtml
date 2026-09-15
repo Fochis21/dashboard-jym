@@ -16,6 +16,7 @@
 <dl>
     <dt>Cliente</dt><dd><a asp-controller="Clientes" asp-action="VerDetalle" asp-route-id="@Model.Cliente!.Id">@Model.Cliente.Nombres @Model.Cliente.Apellidos</a></dd>
     <dt>Proceso</dt><dd>@(Model.Proceso != null ? Model.Proceso.Materia : "No asociado")</dd>
+    <dt>Tipo de pago</dt><dd>@(Model.TipoPago == DashboardJym.Models.TipoPago.EXTRA ? "Pago extra (tasas, edictos, gastos)" : "Honorarios (3 cuotas)")</dd>
     <dt>Monto total</dt><dd>S/ @Model.MontoTotal</dd>
     <dt>Forma de pago</dt><dd>@Model.FormaPago</dd>
     <dt>N° de cuotas</dt><dd>@Model.NumeroCuotas</dd>

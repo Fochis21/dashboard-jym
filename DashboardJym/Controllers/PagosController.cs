@@ -79,16 +79,32 @@ public class PagosController : Controller
 
         pago.UsuarioRegistroId = usuarioActual.Id;
         pago.Estado = EstadoPago.PENDIENTE;
-        pago.NumeroCuotas = 3; // siempre 50% / 25% / 25%
+        pago.NumeroCuotas = pago.TipoPago == TipoPago.EXTRA ? 1 : 3;
         pago.FechaRegistro = DateTime.Now;
         pago.FechaActualizacion = DateTime.Now;
 
         _context.Pagos.Add(pago);
         await _context.SaveChangesAsync();
 
-        // Genera siempre 3 cuotas con la misma estructura del estudio:
-        // 50% al inicio, y el resto dividido en dos cuotas de 25% cada una.
-        GenerarCuotas(pago);
+        // Honorarios: siempre 50% / 25% / 25%. Pago extra (tasas, edictos,
+        // gastos externos aparte del honorario): un solo pago, sin dividir.
+        if (pago.TipoPago == TipoPago.EXTRA)
+        {
+            _context.Cuotas.Add(new Cuota
+            {
+                PagoId = pago.Id,
+                NumeroCuota = 1,
+                Monto = pago.MontoTotal,
+                MontoPagado = 0,
+                FechaVencimiento = pago.FechaPago,
+                Estado = EstadoCuota.PENDIENTE,
+                FormaPago = pago.FormaPago,
+            });
+        }
+        else
+        {
+            GenerarCuotas(pago);
+        }
         await _context.SaveChangesAsync();
 
         var clientePago = await _context.Clientes.FindAsync(pago.ClienteId);
@@ -308,7 +324,15 @@ public class PagosController : Controller
             restante -= aplicado;
         }
 
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            TempData["Mensaje"] = "No se pudo registrar el abono. Detalle técnico: " + ex.Message;
+            return RedirectToAction(nameof(VerDetalle), new { id });
+        }
 
         var detalleCuotas = cuotasConSaldo.Count == 1
             ? $"cuota #{cuotasConSaldo[0].NumeroCuota}"

@@ -19,7 +19,7 @@
 <div class="tabla-wrap">
 <table>
     <thead>
-        <tr><th>Cliente</th><th>Concepto</th><th>Monto</th><th>Cuotas</th><th>Forma de pago</th><th>Estado</th><th></th></tr>
+        <tr><th>Cliente</th><th>Concepto</th><th>Tipo</th><th>Monto</th><th>Cuotas</th><th>Forma de pago</th><th>Estado</th><th></th></tr>
     </thead>
     <tbody>
         @foreach (var p in Model)
@@ -27,6 +27,7 @@
             <tr>
                 <td>@p.Cliente?.Nombres @p.Cliente?.Apellidos</td>
                 <td>@p.Concepto</td>
+                <td>@(p.TipoPago == DashboardJym.Models.TipoPago.EXTRA ? "Extra" : "Honorarios")</td>
                 <td>S/ @p.MontoTotal</td>
                 <td>@p.NumeroCuotas</td>
                 <td>@p.FormaPago</td>

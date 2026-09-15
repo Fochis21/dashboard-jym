@@ -26,6 +26,11 @@ public class Pago
     [Column("forma_pago")]
     public FormaPago FormaPago { get; set; }
 
+    // HONORARIOS: se divide automaticamente en 3 cuotas (50/25/25).
+    // EXTRA: pago externo/aparte (tasas, edictos, gastos), un solo pago sin dividir.
+    [Column("tipo_pago")]
+    public TipoPago TipoPago { get; set; } = TipoPago.HONORARIOS;
+
     [Column("numero_cuotas")]
     public int NumeroCuotas { get; set; } = 1;
 
