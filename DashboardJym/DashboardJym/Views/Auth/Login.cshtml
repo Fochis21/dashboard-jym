@@ -4,6 +4,7 @@
     ViewData["Title"] = "Iniciar sesión";
     bool registrado = (bool)(ViewData["Registrado"] ?? false);
     bool error = (bool)(ViewData["Error"] ?? false);
+    bool passwordRestablecida = (bool)(ViewData["PasswordRestablecida"] ?? false);
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -38,6 +39,10 @@
                 {
                     <div class="mensaje">Cuenta creada correctamente. Ya puedes iniciar sesión.</div>
                 }
+                @if (passwordRestablecida)
+                {
+                    <div class="mensaje">Contraseña actualizada correctamente. Ya puedes iniciar sesión.</div>
+                }
                 @if (error)
                 {
                     <div class="error">Correo o contraseña incorrectos.</div>
@@ -63,7 +68,10 @@
                     <button type="submit" class="btn btn-primario"><i class="bi bi-box-arrow-in-right"></i> Ingresar</button>
                 </form>
 
-                <p style="text-align:center; margin-top:20px; font-size:12.5px;">
+                <p style="text-align:center; margin-top:16px; font-size:12.5px;">
+                    <a asp-controller="Auth" asp-action="OlvidePassword">¿Olvidaste tu contraseña?</a>
+                </p>
+                <p style="text-align:center; margin-top:8px; font-size:12.5px;">
                     <a asp-controller="Auth" asp-action="Registro">¿No tienes cuenta? Regístrate</a>
                 </p>
             </div>

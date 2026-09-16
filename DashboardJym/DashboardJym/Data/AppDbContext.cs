@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<Notificacion> Notificaciones => Set<Notificacion>();
     public DbSet<RegistroActividad> RegistrosActividad => Set<RegistroActividad>();
     public DbSet<SolicitudCambio> SolicitudesCambio => Set<SolicitudCambio>();
+    public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -166,6 +167,20 @@ public class AppDbContext : DbContext
         // registro de actividades (auditoria)
         modelBuilder.Entity<RegistroActividad>()
             .HasOne(r => r.Usuario).WithMany().HasForeignKey(r => r.UsuarioId).OnDelete(DeleteBehavior.Restrict);
+
+        // password_reset_tokens: token unico, FK al usuario dueño del token
+        modelBuilder.Entity<PasswordResetToken>()
+            .HasIndex(t => t.Token)
+            .IsUnique();
+
+        modelBuilder.Entity<PasswordResetToken>()
+            .HasOne(t => t.Usuario)
+            .WithMany()
+            .HasForeignKey(t => t.UsuarioId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<PasswordResetToken>().Property(t => t.FechaCreacion).HasColumnType("timestamp without time zone");
+        modelBuilder.Entity<PasswordResetToken>().Property(t => t.FechaExpiracion).HasColumnType("timestamp without time zone");
 
         // --- Mapeo explicito de columnas de fecha/hora ---
         // Toda la base de datos usa "date" y "timestamp" (SIN zona horaria) en
