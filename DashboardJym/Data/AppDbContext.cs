@@ -205,6 +205,9 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<RegistroActividad>().Property(r => r.FechaHora).HasColumnType("timestamp without time zone");
 
+        modelBuilder.Entity<SolicitudCambio>().Property(s => s.FechaSolicitud).HasColumnType("timestamp without time zone");
+        modelBuilder.Entity<SolicitudCambio>().Property(s => s.FechaRevision).HasColumnType("timestamp without time zone");
+
         modelBuilder.Entity<Usuario>().Property(u => u.FechaCreacion).HasColumnType("timestamp without time zone");
         modelBuilder.Entity<Usuario>().Property(u => u.FechaActualizacion).HasColumnType("timestamp without time zone");
     }
