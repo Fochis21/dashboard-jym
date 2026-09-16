@@ -39,7 +39,7 @@
                 <td>
                     <a asp-action="VerDetalle" asp-route-id="@p.Id">Ver</a>
                     &nbsp;|&nbsp;
-                    <a asp-action="FormularioEditar" asp-route-id="@p.Id">Editar</a>
+                    <a asp-action="FormularioEditar" asp-route-id="@p.Id">@(User.IsInRole("ABOGADO") ? "Editar" : "Solicitar edición")</a>
                 </td>
             </tr>
         }

@@ -22,6 +22,17 @@
                 <a class="item" href="/app/clientes"><i class="bi bi-people"></i> Clientes</a>
                 <a class="item" href="/app/procesos"><i class="bi bi-briefcase"></i> Procesos</a>
                 <a class="item" href="/app/pagos"><i class="bi bi-cash-coin"></i> Pagos</a>
+                @if (User.IsInRole("ABOGADO"))
+                {
+                    var pendientes = ViewData["SolicitudesPendientes"] as int? ?? 0;
+                    <a class="item" href="/app/solicitudes">
+                        <i class="bi bi-check2-square"></i> Solicitudes de cambio
+                        @if (pendientes > 0)
+                        {
+                            <span class="contador-menu">@pendientes</span>
+                        }
+                    </a>
+                }
                 <a class="item" href="/app/agenda"><i class="bi bi-calendar3"></i> Agenda</a>
                 <a class="item" href="/app/mensajes"><i class="bi bi-chat-dots"></i> Mensajes</a>
                 <a class="item" href="/app/notificaciones"><i class="bi bi-bell"></i> Notificaciones</a>

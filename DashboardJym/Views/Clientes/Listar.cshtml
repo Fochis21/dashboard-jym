@@ -2,6 +2,10 @@
 @{
     ViewData["Title"] = "Clientes";
     var q = ViewData["Q"] as string;
+    var esAbogado = User.IsInRole("ABOGADO");
+    var avisoBaja = esAbogado
+        ? "¿Desactivar a este cliente?"
+        : "Se enviará una solicitud de desactivación para que un abogado la apruebe. ¿Continuar?";
 }
 
 <h1>Clientes</h1>
@@ -36,12 +40,13 @@
                 <td>
                     <a asp-action="VerDetalle" asp-route-id="@c.Id">Ver</a>
                     &nbsp;|&nbsp;
-                    <a asp-action="FormularioEditar" asp-route-id="@c.Id">Editar</a>
+                    <a asp-action="FormularioEditar" asp-route-id="@c.Id">@(esAbogado ? "Editar" : "Solicitar edición")</a>
                     &nbsp;|&nbsp;
                     <form method="post" asp-action="Desactivar" asp-route-id="@c.Id" style="display:inline"
-                          onsubmit="return confirm('¿Desactivar a este cliente?');">
+                          onsubmit="return confirm(this.dataset.aviso);"
+                          data-aviso="@avisoBaja">
                         @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-peligro" style="padding:2px 8px;">Desactivar</button>
+                        <button type="submit" class="btn btn-peligro" style="padding:2px 8px;">@(esAbogado ? "Desactivar" : "Solicitar baja")</button>
                     </form>
                 </td>
             </tr>

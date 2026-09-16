@@ -32,4 +32,4 @@
     <dt>Fecha de registro</dt><dd>@(Model.FechaRegistro?.ToString("dd/MM/yyyy HH:mm"))</dd>
 </dl>
 
-<a class="btn btn-primario" asp-action="FormularioEditar" asp-route-id="@Model.Id"><i class="bi bi-pencil"></i> Editar proceso</a>
+<a class="btn btn-primario" asp-action="FormularioEditar" asp-route-id="@Model.Id"><i class="bi bi-pencil"></i> @(User.IsInRole("ABOGADO") ? "Editar proceso" : "Solicitar edición")</a>

@@ -182,7 +182,9 @@ public class PagosController : Controller
     }
 
     // POST /app/pagos/{id}/confirmar
+    // Confirmar y observar pagos es control financiero: solo ABOGADO.
     [HttpPost("{id:long}/confirmar")]
+    [Authorize(Roles = PermisosUtil.RolAbogado)]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Confirmar(long id)
     {
@@ -191,6 +193,7 @@ public class PagosController : Controller
 
     // POST /app/pagos/{id}/observar
     [HttpPost("{id:long}/observar")]
+    [Authorize(Roles = PermisosUtil.RolAbogado)]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Observar(long id, string motivo)
     {
@@ -346,7 +349,9 @@ public class PagosController : Controller
     }
 
     // POST /app/pagos/cuotas/{cuotaId}/estado
+    // Forzar el estado de una cuota a mano solo lo hace un ABOGADO.
     [HttpPost("cuotas/{cuotaId:long}/estado")]
+    [Authorize(Roles = PermisosUtil.RolAbogado)]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CambiarEstadoCuota(long cuotaId, EstadoCuota estado, long pagoId)
     {

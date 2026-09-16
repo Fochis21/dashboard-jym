@@ -29,6 +29,13 @@ public class ContadorNotificacionesFilter : IAsyncActionFilter
             if (context.Controller is Controller controller)
             {
                 controller.ViewData["NotificacionesNoLeidas"] = noLeidas;
+
+                // Solo los abogados ven la bandeja de aprobaciones.
+                if (context.HttpContext.User.IsInRole(PermisosUtil.RolAbogado))
+                {
+                    controller.ViewData["SolicitudesPendientes"] = await _context.SolicitudesCambio
+                        .CountAsync(s => s.Estado == Models.EstadoSolicitud.PENDIENTE);
+                }
             }
         }
 

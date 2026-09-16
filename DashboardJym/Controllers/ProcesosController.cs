@@ -14,12 +14,15 @@ public class ProcesosController : Controller
     private readonly AppDbContext _context;
     private readonly SesionUtil _sesionUtil;
     private readonly RegistroActividadHelper _registroActividad;
+    private readonly SolicitudCambioHelper _solicitudCambio;
 
-    public ProcesosController(AppDbContext context, SesionUtil sesionUtil, RegistroActividadHelper registroActividad)
+    public ProcesosController(AppDbContext context, SesionUtil sesionUtil,
+        RegistroActividadHelper registroActividad, SolicitudCambioHelper solicitudCambio)
     {
         _context = context;
         _sesionUtil = sesionUtil;
         _registroActividad = registroActividad;
+        _solicitudCambio = solicitudCambio;
     }
 
     // GET /app/procesos?q=...&clienteId=...
@@ -149,6 +152,23 @@ public class ProcesosController : Controller
             return View("Formulario", datos);
         }
 
+        var usuarioActual = await _sesionUtil.ObtenerUsuarioActualAsync();
+
+        if (PermisosUtil.EsAsesor(User))
+        {
+            datos.Id = id;
+            var resumen = SolicitudCambioHelper.ResumirCambios(proceso, datos,
+                nameof(Proceso.Materia), nameof(Proceso.Descripcion), nameof(Proceso.NumeroExpediente),
+                nameof(Proceso.JuzgadoFiscalia), nameof(Proceso.DistritoJudicial), nameof(Proceso.FechaInicio),
+                nameof(Proceso.Estado), nameof(Proceso.Prioridad), nameof(Proceso.Observaciones));
+
+            await _solicitudCambio.CrearAsync("Procesos", id, TipoAccionSolicitud.EDITAR, datos,
+                $"Editar el proceso \"{proceso.Materia}\"", resumen, usuarioActual.Id);
+
+            TempData["Mensaje"] = "Tu solicitud de edición fue enviada. Un abogado debe aprobarla antes de que el cambio se aplique.";
+            return RedirectToAction(nameof(Listar));
+        }
+
         proceso.ClienteId = datos.ClienteId;
         proceso.TipoProcesoId = datos.TipoProcesoId;
         proceso.Materia = datos.Materia;
@@ -166,7 +186,6 @@ public class ProcesosController : Controller
 
         await _context.SaveChangesAsync();
 
-        var usuarioActual = await _sesionUtil.ObtenerUsuarioActualAsync();
         await _registroActividad.RegistrarAsync(usuarioActual.Id, "Editó proceso", "Procesos", proceso.Id,
             $"Editó el proceso \"{proceso.Materia}\"");
 

@@ -22,6 +22,7 @@ public class AppDbContext : DbContext
     public DbSet<Mensaje> Mensajes => Set<Mensaje>();
     public DbSet<Notificacion> Notificaciones => Set<Notificacion>();
     public DbSet<RegistroActividad> RegistrosActividad => Set<RegistroActividad>();
+    public DbSet<SolicitudCambio> SolicitudesCambio => Set<SolicitudCambio>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -133,6 +134,15 @@ public class AppDbContext : DbContext
         // agenda: FKs y enums como texto
         modelBuilder.Entity<ActividadAgenda>().Property(a => a.Tipo).HasConversion<string>().HasMaxLength(20);
         modelBuilder.Entity<ActividadAgenda>().Property(a => a.Estado).HasConversion<string>().HasMaxLength(20);
+
+        modelBuilder.Entity<SolicitudCambio>().Property(s => s.TipoAccion).HasConversion<string>().HasMaxLength(20);
+        modelBuilder.Entity<SolicitudCambio>().Property(s => s.Estado).HasConversion<string>().HasMaxLength(20);
+        modelBuilder.Entity<SolicitudCambio>()
+            .HasOne(s => s.Solicitante).WithMany().HasForeignKey(s => s.SolicitanteId)
+            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<SolicitudCambio>()
+            .HasOne(s => s.Revisor).WithMany().HasForeignKey(s => s.RevisorId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<ActividadAgenda>()
             .HasOne(a => a.Cliente).WithMany().HasForeignKey(a => a.ClienteId).OnDelete(DeleteBehavior.SetNull);

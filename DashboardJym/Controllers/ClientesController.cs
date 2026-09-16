@@ -14,12 +14,15 @@ public class ClientesController : Controller
     private readonly AppDbContext _context;
     private readonly SesionUtil _sesionUtil;
     private readonly RegistroActividadHelper _registroActividad;
+    private readonly SolicitudCambioHelper _solicitudCambio;
 
-    public ClientesController(AppDbContext context, SesionUtil sesionUtil, RegistroActividadHelper registroActividad)
+    public ClientesController(AppDbContext context, SesionUtil sesionUtil,
+        RegistroActividadHelper registroActividad, SolicitudCambioHelper solicitudCambio)
     {
         _context = context;
         _sesionUtil = sesionUtil;
         _registroActividad = registroActividad;
+        _solicitudCambio = solicitudCambio;
     }
 
     // GET /app/clientes?q=...
@@ -111,6 +114,26 @@ public class ClientesController : Controller
             return View("Formulario", datos);
         }
 
+        var usuarioActual = await _sesionUtil.ObtenerUsuarioActualAsync();
+
+        // Un asesor legal no escribe sobre el registro: su edicion queda
+        // como propuesta y solo se aplica cuando un abogado la aprueba.
+        if (PermisosUtil.EsAsesor(User))
+        {
+            datos.Id = id;
+            var resumen = SolicitudCambioHelper.ResumirCambios(cliente, datos,
+                nameof(Cliente.Nombres), nameof(Cliente.Apellidos), nameof(Cliente.Dni),
+                nameof(Cliente.FechaEmisionDni), nameof(Cliente.FechaNacimiento),
+                nameof(Cliente.NombrePadre), nameof(Cliente.NombreMadre),
+                nameof(Cliente.Whatsapp), nameof(Cliente.Correo), nameof(Cliente.Observaciones));
+
+            await _solicitudCambio.CrearAsync("Clientes", id, TipoAccionSolicitud.EDITAR, datos,
+                $"Editar al cliente {cliente.Nombres} {cliente.Apellidos}", resumen, usuarioActual.Id);
+
+            TempData["Mensaje"] = "Tu solicitud de edición fue enviada. Un abogado debe aprobarla antes de que el cambio se aplique.";
+            return RedirectToAction(nameof(Listar));
+        }
+
         // Mismos campos editables que en el service Java: no se toca
         // usuario_registro_id, estado ni fecha_registro.
         cliente.Nombres = datos.Nombres;
@@ -127,7 +150,6 @@ public class ClientesController : Controller
 
         await _context.SaveChangesAsync();
 
-        var usuarioActual = await _sesionUtil.ObtenerUsuarioActualAsync();
         await _registroActividad.RegistrarAsync(usuarioActual.Id, "Editó cliente", "Clientes", cliente.Id,
             $"Editó los datos del cliente {cliente.Nombres} {cliente.Apellidos}");
 
@@ -157,12 +179,24 @@ public class ClientesController : Controller
         var cliente = await _context.Clientes.FindAsync(id);
         if (cliente == null) return NotFound();
 
+        var usuarioActual = await _sesionUtil.ObtenerUsuarioActualAsync();
+
+        if (PermisosUtil.EsAsesor(User))
+        {
+            await _solicitudCambio.CrearAsync<Cliente>("Clientes", id, TipoAccionSolicitud.DESACTIVAR, null,
+                $"Desactivar al cliente {cliente.Nombres} {cliente.Apellidos}",
+                "El cliente pasaría a estado inactivo (no se elimina de la base de datos).",
+                usuarioActual.Id);
+
+            TempData["Mensaje"] = "Tu solicitud de desactivación fue enviada. Un abogado debe aprobarla.";
+            return RedirectToAction(nameof(Listar));
+        }
+
         // Eliminacion logica: el cliente permanece en la BD.
         cliente.Estado = false;
         cliente.FechaActualizacion = DateTime.Now;
         await _context.SaveChangesAsync();
 
-        var usuarioActual = await _sesionUtil.ObtenerUsuarioActualAsync();
         await _registroActividad.RegistrarAsync(usuarioActual.Id, "Desactivó cliente", "Clientes", cliente.Id,
             $"Desactivó al cliente {cliente.Nombres} {cliente.Apellidos}");
 
