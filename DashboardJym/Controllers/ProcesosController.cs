@@ -159,11 +159,19 @@ public class ProcesosController : Controller
             datos.Id = id;
             var resumen = SolicitudCambioHelper.ResumirCambios(proceso, datos,
                 nameof(Proceso.Materia), nameof(Proceso.Descripcion), nameof(Proceso.NumeroExpediente),
-                nameof(Proceso.JuzgadoFiscalia), nameof(Proceso.DistritoJudicial), nameof(Proceso.FechaInicio),
+                nameof(Proceso.JuzgadoFiscalia), nameof(Proceso.EspecialistaLegal), nameof(Proceso.DistritoJudicial), nameof(Proceso.FechaInicio),
                 nameof(Proceso.Estado), nameof(Proceso.Prioridad), nameof(Proceso.Observaciones));
 
-            await _solicitudCambio.CrearAsync("Procesos", id, TipoAccionSolicitud.EDITAR, datos,
-                $"Editar el proceso \"{proceso.Materia}\"", resumen, usuarioActual.Id);
+            try
+            {
+                await _solicitudCambio.CrearAsync("Procesos", id, TipoAccionSolicitud.EDITAR, datos,
+                    $"Editar el proceso \"{proceso.Materia}\"", resumen, usuarioActual.Id);
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensaje"] = "No se pudo enviar la solicitud. Detalle técnico: " + ex.Message;
+                return RedirectToAction(nameof(Listar));
+            }
 
             TempData["Mensaje"] = "Tu solicitud de edición fue enviada. Un abogado debe aprobarla antes de que el cambio se aplique.";
             return RedirectToAction(nameof(Listar));
@@ -175,6 +183,7 @@ public class ProcesosController : Controller
         proceso.Descripcion = datos.Descripcion;
         proceso.NumeroExpediente = datos.NumeroExpediente;
         proceso.JuzgadoFiscalia = datos.JuzgadoFiscalia;
+        proceso.EspecialistaLegal = datos.EspecialistaLegal;
         proceso.DistritoJudicial = datos.DistritoJudicial;
         proceso.FechaInicio = datos.FechaInicio;
         proceso.Estado = datos.Estado;

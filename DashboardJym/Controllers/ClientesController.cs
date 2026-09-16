@@ -127,8 +127,16 @@ public class ClientesController : Controller
                 nameof(Cliente.NombrePadre), nameof(Cliente.NombreMadre),
                 nameof(Cliente.Whatsapp), nameof(Cliente.Correo), nameof(Cliente.Observaciones));
 
-            await _solicitudCambio.CrearAsync("Clientes", id, TipoAccionSolicitud.EDITAR, datos,
-                $"Editar al cliente {cliente.Nombres} {cliente.Apellidos}", resumen, usuarioActual.Id);
+            try
+            {
+                await _solicitudCambio.CrearAsync("Clientes", id, TipoAccionSolicitud.EDITAR, datos,
+                    $"Editar al cliente {cliente.Nombres} {cliente.Apellidos}", resumen, usuarioActual.Id);
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensaje"] = "No se pudo enviar la solicitud. Detalle técnico: " + ex.Message;
+                return RedirectToAction(nameof(Listar));
+            }
 
             TempData["Mensaje"] = "Tu solicitud de edición fue enviada. Un abogado debe aprobarla antes de que el cambio se aplique.";
             return RedirectToAction(nameof(Listar));
@@ -183,10 +191,18 @@ public class ClientesController : Controller
 
         if (PermisosUtil.EsAsesor(User))
         {
-            await _solicitudCambio.CrearAsync<Cliente>("Clientes", id, TipoAccionSolicitud.DESACTIVAR, null,
-                $"Desactivar al cliente {cliente.Nombres} {cliente.Apellidos}",
-                "El cliente pasaría a estado inactivo (no se elimina de la base de datos).",
-                usuarioActual.Id);
+            try
+            {
+                await _solicitudCambio.CrearAsync<Cliente>("Clientes", id, TipoAccionSolicitud.DESACTIVAR, null,
+                    $"Desactivar al cliente {cliente.Nombres} {cliente.Apellidos}",
+                    "El cliente pasaría a estado inactivo (no se elimina de la base de datos).",
+                    usuarioActual.Id);
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensaje"] = "No se pudo enviar la solicitud. Detalle técnico: " + ex.Message;
+                return RedirectToAction(nameof(Listar));
+            }
 
             TempData["Mensaje"] = "Tu solicitud de desactivación fue enviada. Un abogado debe aprobarla.";
             return RedirectToAction(nameof(Listar));
