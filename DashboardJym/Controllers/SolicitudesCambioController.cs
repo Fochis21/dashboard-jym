@@ -186,6 +186,7 @@ public class SolicitudesCambioController : Controller
             proceso.TipoProcesoId = datos.TipoProcesoId;
             proceso.Materia = datos.Materia;
             proceso.Descripcion = datos.Descripcion;
+            proceso.UltimoActuado = datos.UltimoActuado;
             proceso.NumeroExpediente = datos.NumeroExpediente;
             proceso.NumeroCarpeta = datos.NumeroCarpeta;
             proceso.JuzgadoFiscalia = datos.JuzgadoFiscalia;

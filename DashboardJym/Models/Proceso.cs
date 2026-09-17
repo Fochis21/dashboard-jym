@@ -28,6 +28,9 @@ public class Proceso
     [Column("numero_carpeta"), MaxLength(100)]
     public string? NumeroCarpeta { get; set; }
 
+    [Column("ultimo_actuado")]
+    public string? UltimoActuado { get; set; }
+
     [Column("juzgado_fiscalia"), MaxLength(200)]
     public string? JuzgadoFiscalia { get; set; }
 

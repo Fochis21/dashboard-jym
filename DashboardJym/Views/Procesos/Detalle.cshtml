@@ -9,6 +9,7 @@
     <dt>Cliente</dt><dd><a asp-controller="Clientes" asp-action="VerDetalle" asp-route-id="@Model.Cliente!.Id">@Model.Cliente.Nombres @Model.Cliente.Apellidos</a></dd>
     <dt>Tipo de proceso</dt><dd>@Model.TipoProceso?.Nombre</dd>
     <dt>Descripción</dt><dd>@Model.Descripcion</dd>
+    <dt>Último actuado</dt><dd>@(string.IsNullOrWhiteSpace(Model.UltimoActuado) ? "-" : Model.UltimoActuado)</dd>
     <dt>N° de expediente</dt><dd>@(string.IsNullOrWhiteSpace(Model.NumeroExpediente) ? "-" : Model.NumeroExpediente)</dd>
     <dt>N° de carpeta</dt><dd>@(string.IsNullOrWhiteSpace(Model.NumeroCarpeta) ? "-" : Model.NumeroCarpeta)</dd>
     <dt>Juzgado / Fiscalía</dt><dd>@Model.JuzgadoFiscalia</dd>

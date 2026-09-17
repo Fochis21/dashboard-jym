@@ -159,9 +159,9 @@ public class ProcesosController : Controller
         {
             datos.Id = id;
             var resumen = SolicitudCambioHelper.ResumirCambios(proceso, datos,
-                nameof(Proceso.Materia), nameof(Proceso.Descripcion), nameof(Proceso.NumeroExpediente),
-                nameof(Proceso.NumeroCarpeta), nameof(Proceso.JuzgadoFiscalia), nameof(Proceso.EspecialistaLegal),
-                nameof(Proceso.DistritoJudicial), nameof(Proceso.FechaInicio),
+                nameof(Proceso.Materia), nameof(Proceso.Descripcion), nameof(Proceso.UltimoActuado),
+                nameof(Proceso.NumeroExpediente), nameof(Proceso.NumeroCarpeta), nameof(Proceso.JuzgadoFiscalia),
+                nameof(Proceso.EspecialistaLegal), nameof(Proceso.DistritoJudicial), nameof(Proceso.FechaInicio),
                 nameof(Proceso.Estado), nameof(Proceso.Prioridad), nameof(Proceso.Observaciones));
 
             try
@@ -183,6 +183,7 @@ public class ProcesosController : Controller
         proceso.TipoProcesoId = datos.TipoProcesoId;
         proceso.Materia = datos.Materia;
         proceso.Descripcion = datos.Descripcion;
+        proceso.UltimoActuado = datos.UltimoActuado;
         proceso.NumeroExpediente = datos.NumeroExpediente;
         proceso.NumeroCarpeta = datos.NumeroCarpeta;
         proceso.JuzgadoFiscalia = datos.JuzgadoFiscalia;
