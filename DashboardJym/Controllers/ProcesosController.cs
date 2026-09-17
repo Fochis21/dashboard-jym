@@ -50,7 +50,8 @@ public class ProcesosController : Controller
                     EF.Functions.ILike(p.Materia, $"%{texto}%") ||
                     EF.Functions.ILike(p.Cliente!.Nombres, $"%{texto}%") ||
                     EF.Functions.ILike(p.Cliente!.Apellidos, $"%{texto}%") ||
-                    (p.NumeroExpediente != null && EF.Functions.ILike(p.NumeroExpediente, $"%{texto}%")));
+                    (p.NumeroExpediente != null && EF.Functions.ILike(p.NumeroExpediente, $"%{texto}%")) ||
+                    (p.NumeroCarpeta != null && EF.Functions.ILike(p.NumeroCarpeta, $"%{texto}%")));
             }
             query = query.OrderByDescending(p => p.FechaRegistro);
         }
@@ -159,7 +160,8 @@ public class ProcesosController : Controller
             datos.Id = id;
             var resumen = SolicitudCambioHelper.ResumirCambios(proceso, datos,
                 nameof(Proceso.Materia), nameof(Proceso.Descripcion), nameof(Proceso.NumeroExpediente),
-                nameof(Proceso.JuzgadoFiscalia), nameof(Proceso.EspecialistaLegal), nameof(Proceso.DistritoJudicial), nameof(Proceso.FechaInicio),
+                nameof(Proceso.NumeroCarpeta), nameof(Proceso.JuzgadoFiscalia), nameof(Proceso.EspecialistaLegal),
+                nameof(Proceso.DistritoJudicial), nameof(Proceso.FechaInicio),
                 nameof(Proceso.Estado), nameof(Proceso.Prioridad), nameof(Proceso.Observaciones));
 
             try
@@ -182,6 +184,7 @@ public class ProcesosController : Controller
         proceso.Materia = datos.Materia;
         proceso.Descripcion = datos.Descripcion;
         proceso.NumeroExpediente = datos.NumeroExpediente;
+        proceso.NumeroCarpeta = datos.NumeroCarpeta;
         proceso.JuzgadoFiscalia = datos.JuzgadoFiscalia;
         proceso.EspecialistaLegal = datos.EspecialistaLegal;
         proceso.DistritoJudicial = datos.DistritoJudicial;

@@ -25,6 +25,9 @@ public class Proceso
     [Column("numero_expediente"), MaxLength(100)]
     public string? NumeroExpediente { get; set; }
 
+    [Column("numero_carpeta"), MaxLength(100)]
+    public string? NumeroCarpeta { get; set; }
+
     [Column("juzgado_fiscalia"), MaxLength(200)]
     public string? JuzgadoFiscalia { get; set; }
 
