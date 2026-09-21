@@ -53,6 +53,7 @@ builder.Services.AddScoped<DashboardJym.Util.NotificacionHelper>();
 builder.Services.AddScoped<DashboardJym.Util.ContadorNotificacionesFilter>();
 builder.Services.AddScoped<DashboardJym.Util.RegistroActividadHelper>();
 builder.Services.AddScoped<DashboardJym.Util.SolicitudCambioHelper>();
+builder.Services.AddHttpClient(nameof(DashboardJym.Util.EmailHelper));
 builder.Services.AddScoped<DashboardJym.Util.EmailHelper>();
 
 var app = builder.Build();
