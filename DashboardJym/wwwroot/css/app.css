@@ -94,6 +94,14 @@ h2 {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    /* Fijo: siempre ocupa el alto de la ventana, sin importar el largo del contenido */
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    z-index: 20;
 }
 
 .sidebar .logo {
@@ -129,7 +137,7 @@ h2 {
     margin-top: 2px;
 }
 
-.sidebar nav { flex: 1; padding: 14px 10px; overflow-y: auto; }
+.sidebar nav { flex: 1; min-height: 0; padding: 14px 10px; overflow-y: auto; }
 
 .sidebar a.item {
     display: flex;
@@ -178,7 +186,7 @@ h2 {
 }
 .sidebar-backdrop.visible { display: block; opacity: 1; }
 
-.main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; max-width: 100%; margin-left: 18px; }
+.main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; max-width: 100%; margin-left: 258px; /* 240px sidebar + 18px de separación */ }
 
 .topbar {
     background: #fff;
@@ -472,11 +480,8 @@ table.calendario td { height: 96px; vertical-align: top; padding: 8px; }
     .menu-toggle { display: inline-flex; }
 
     .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
         height: 100vh;
-        z-index: 20;
+        height: 100dvh;
         transform: translateX(-100%);
         transition: transform .22s ease;
         box-shadow: var(--shadow-lg);
